@@ -25,7 +25,7 @@ Route::post('/contact/send', [InquiryController::class, 'store'])
 
 Auth::routes();
 
-Route::middleware(['auth', 'prevent-back-history'])->group(function () {
+Route::middleware(['auth'])->group(function ()  {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
