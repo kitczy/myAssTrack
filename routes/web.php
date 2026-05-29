@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AssignmentController;
@@ -10,20 +11,19 @@ use App\Http\Controllers\InquiryController;
 
 Route::get('/', function () {
     return view('welcome');
-});
-
-require __DIR__.'/auth.php';
+})->name('welcome');
 
 Route::get('/home', function () {
     return redirect('/dashboard');
 });
 
 Route::view('/about', 'about')->name('about');
-
 Route::view('/contact', 'contact')->name('contact');
 
 Route::post('/contact/send', [InquiryController::class, 'store'])
     ->name('contact.send');
+
+Auth::routes();
 
 Route::middleware(['auth', 'prevent-back-history'])->group(function () {
 
@@ -45,11 +45,14 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function () {
     Route::get('/assignments', [AssignmentController::class, 'index'])
         ->name('assignments');
 
-    Route::post('/assignments', [AssignmentController::class, 'store']);
+    Route::post('/assignments', [AssignmentController::class, 'store'])
+        ->name('assignments.store');
 
-    Route::put('/assignments/{id}', [AssignmentController::class, 'update']);
+    Route::put('/assignments/{id}', [AssignmentController::class, 'update'])
+        ->name('assignments.update');
 
-    Route::delete('/assignments/{id}', [AssignmentController::class, 'destroy']);
+    Route::delete('/assignments/{id}', [AssignmentController::class, 'destroy'])
+        ->name('assignments.destroy');
 
     Route::get('/profile', [ProfileController::class, 'index'])
         ->name('profile');
